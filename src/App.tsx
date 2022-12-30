@@ -3,7 +3,7 @@ import { Route, Routes, Navigate } from "react-router-dom";
 import { NewNote } from "./assets/Pages/NewNote";
 import { useLocalStorage } from "./assets/utils/hooks/useLocalStorage";
 import { v4 as uuidV4 } from "uuid";
-import { NoteList } from "./assets/Components/NoteList";
+import { NoteList } from "./assets/Pages/NotesList";
 import { NoteLayout } from "./assets/Components/NoteLayout";
 import { Note } from "./assets/Components/Note";
 import { EditNote } from "./assets/Pages/EditNote";

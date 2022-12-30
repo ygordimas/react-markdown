@@ -16,13 +16,14 @@ import Grid from "@mui/material/Grid";
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import ReactSelect from "react-select/creatable";
-import { Tag } from "../../../App";
+import { Tag } from "../../App";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 type SimplifiedNote = {
   tags: Tag[];
   title: string;
   id: string;
+  markdown: string;
 };
 type NoteListProp = {
   availableTags: Tag[];
@@ -68,14 +69,24 @@ export function NoteList({
       <Grid
         container
         spacing={0.5}
-        justifyContent="space-between"
         alignItems="center"
         alignSelf="flex-start"
         borderBottom="1px solid lightgray"
-        height="80px"
+        minHeight="80px"
+        padding="8px"
+        sx={{
+          justifyContent: { xs: "center", md: "space-between" },
+        }}
       >
-        <Grid item>
-          <Typography variant="h3">Markdown Notes</Typography>
+        <Grid item xs={12} md={8}>
+          <Typography
+            variant="h3"
+            sx={{
+              textAlign: { xs: "center", md: "left" },
+            }}
+          >
+            Markdown Notes
+          </Typography>
         </Grid>
         <Grid item>
           <Grid container spacing={0.5}>
@@ -100,13 +111,13 @@ export function NoteList({
         container
         alignItems="center"
         justifyContent="center"
-        spacing={2}
+        spacing={0.5}
         marginTop="16px"
       >
         <Grid item xs={12}>
           <TextField
             id="outlined-basic"
-            label="Search by Title"
+            label="Search Notes by Title"
             variant="outlined"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
@@ -118,10 +129,16 @@ export function NoteList({
             styles={{
               container: (baseStyles, state) => ({
                 ...baseStyles,
-                height: "100%",
+
+                fontFamily: "Roboto",
+                height: "56px",
+              }),
+              valueContainer: (baseStyles, state) => ({
+                ...baseStyles,
+                height: "56px",
               }),
             }}
-            placeholder="Search by Tags"
+            placeholder="Search Note by Tags"
             isMulti
             value={selectedTags.map((tag) => {
               return { label: tag.label, value: tag.id };
@@ -140,40 +157,24 @@ export function NoteList({
         </Grid>
       </Grid>
 
-      {/* <form action="">
-          <div>
-            <label htmlFor="title">Title</label>
-            <input
-              type="text"
-              id="title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-            <label htmlFor="tags">Tags</label>
-            <ReactSelect
-              placeholder="Search by Tags"
-              isMulti
-              value={selectedTags.map((tag) => {
-                return { label: tag.label, value: tag.id };
-              })}
-              onChange={(tags) => {
-                setSelectedTags(
-                  tags.map((tag) => {
-                    return { label: tag.label, id: tag.value };
-                  })
-                );
-              }}
-              options={availableTags.map((tag) => {
-                return { label: tag.label, value: tag.id };
-              })}
-            />
-          </div>
-        </form> */}
-
-      <Grid container marginTop="24px">
+      <Grid container marginTop="24px" spacing={2}>
         {filteredNotes.map((note) => (
-          <Grid xs={4} item key={note.id}>
-            <NoteCard id={note.id} title={note.title} tags={note.tags} />
+          <Grid
+            xs={12}
+            sm={6}
+            md={4}
+            item
+            key={note.id}
+            sx={{
+              flexGrow: "1",
+            }}
+          >
+            <NoteCard
+              id={note.id}
+              title={note.title}
+              tags={note.tags}
+              markdown={note.markdown}
+            />
           </Grid>
         ))}
       </Grid>
@@ -196,23 +197,56 @@ export function NoteList({
   );
 }
 
-function NoteCard({ id, title, tags }: SimplifiedNote) {
+function NoteCard({ id, title, tags, markdown }: SimplifiedNote) {
   return (
     <Link to={`/${id}`}>
-      <Card variant="outlined">
-        <CardActionArea>
-          <CardContent>
-            <Typography variant="h6">{title}</Typography>
-            {tags.length > 0 && (
-              <div>
-                {tags.map((tag) => (
-                  <Chip key={tag.id} label={tag.label} />
-                ))}
-              </div>
-            )}
-          </CardContent>
-        </CardActionArea>
-      </Card>
+      <Paper
+        variant="outlined"
+        sx={{
+          minHeight: "100%",
+          padding: "8px",
+          marginBottom: "8px",
+          boxSizing: "border-box",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        <Box sx={{ height: "32px", width: "100%", overflow: "hidden" }}>
+          <Typography variant="h6">{title}</Typography>
+        </Box>
+
+        {/* <Divider /> */}
+        <Box
+          sx={{
+            maxHeight: "160px",
+
+            flex: "1",
+            overflow: "hidden",
+          }}
+        >
+          {markdown.length > 0 && <>{markdown}</>}
+        </Box>
+
+        {markdown.length > 0 && tags.length > 0 && <Divider />}
+
+        {tags.length > 0 && (
+          <Grid
+            container
+            spacing={0.5}
+            sx={{ marginTop: "8px", justifySelf: "flex-end" }}
+          >
+            {tags.map((tag) => (
+              <Grid item>
+                <Chip
+                  key={tag.id}
+                  label={tag.label}
+                  sx={{ cursor: "pointer" }}
+                />
+              </Grid>
+            ))}
+          </Grid>
+        )}
+      </Paper>
     </Link>
   );
 }
@@ -223,6 +257,7 @@ const modalStyle = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 400,
+
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
@@ -248,7 +283,11 @@ function EditTagsModal({
         <Typography variant="h5">Edit Tags</Typography>
         <Divider />
 
-        <Stack marginTop="16px" spacing={1}>
+        <Stack
+          marginTop="16px"
+          spacing={1}
+          sx={{ maxHeight: "400px", overflowY: "scroll" }}
+        >
           {availableTags.map((tag) => (
             <Box
               key={tag.id}
