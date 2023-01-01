@@ -8,6 +8,7 @@ import { NoteLayout } from "./assets/Components/NoteLayout";
 import { Note } from "./assets/Components/Note";
 import { EditNote } from "./assets/Pages/EditNote";
 import Container from "@mui/material/Container";
+import remarkGfm from "remark-gfm";
 
 export type Note = {
   id: string;

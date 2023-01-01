@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useNote } from "./NoteLayout";
 import ReactMarkdown from "react-markdown";
 import { Box, Button, Chip, Grid, Stack, Typography } from "@mui/material";
+import remarkGfm from "remark-gfm";
 
 type NoteProps = {
   onDelete: (id: string) => void;
@@ -73,7 +74,9 @@ export function Note({ onDelete }: NoteProps) {
           )}
         </Stack>
 
-        <ReactMarkdown>{note.markdown}</ReactMarkdown>
+        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+          {note.markdown}
+        </ReactMarkdown>
       </Box>
     </>
   );

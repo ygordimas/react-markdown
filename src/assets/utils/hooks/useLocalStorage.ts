@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import starterNotes from "../starterNotes";
+import starterTags from "../starterTags";
 
 export function useLocalStorage<T>(key: string, initialValue: T | (() => T)) {
   //checks if value exists
@@ -14,6 +16,9 @@ export function useLocalStorage<T>(key: string, initialValue: T | (() => T)) {
       return JSON.parse(jsonValue);
     }
   });
+
+  localStorage.setItem("NOTES", JSON.stringify(starterNotes));
+  localStorage.setItem("TAGS", JSON.stringify(starterTags));
 
   //if it does, it is updated
   useEffect(() => {

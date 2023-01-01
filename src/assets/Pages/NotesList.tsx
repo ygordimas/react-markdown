@@ -18,6 +18,8 @@ import { Link } from "react-router-dom";
 import ReactSelect from "react-select/creatable";
 import { Tag } from "../../App";
 import DeleteIcon from "@mui/icons-material/Delete";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 type SimplifiedNote = {
   tags: Tag[];
@@ -222,9 +224,21 @@ function NoteCard({ id, title, tags, markdown }: SimplifiedNote) {
 
             flex: "1",
             overflow: "hidden",
+            position: "relative",
           }}
         >
-          {markdown.length > 0 && <>{markdown}</>}
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>{markdown}</ReactMarkdown>
+          <Box
+            sx={{
+              position: "absolute",
+              top: "0",
+              left: "0",
+              width: "100%",
+              height: "100%",
+              background:
+                "linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 95%)",
+            }}
+          ></Box>
         </Box>
 
         {markdown.length > 0 && tags.length > 0 && <Divider />}
