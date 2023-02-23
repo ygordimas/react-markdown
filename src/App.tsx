@@ -44,7 +44,7 @@ function App() {
   useEffect(() => {
     localStorage.setItem("NOTES", JSON.stringify(starterNotes));
     localStorage.setItem("TAGS", JSON.stringify(starterTags));
-  }, []);
+  }, [notes]);
 
   const notesWithTags = useMemo(() => {
     return notes.map((note) => {
