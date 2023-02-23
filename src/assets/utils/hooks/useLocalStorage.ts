@@ -17,9 +17,6 @@ export function useLocalStorage<T>(key: string, initialValue: T | (() => T)) {
     }
   });
 
-  localStorage.setItem("NOTES", JSON.stringify(starterNotes));
-  localStorage.setItem("TAGS", JSON.stringify(starterTags));
-
   //if it does, it is updated
   useEffect(() => {
     localStorage.setItem(key, JSON.stringify(value));

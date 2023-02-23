@@ -38,13 +38,10 @@ export type Tag = {
 };
 
 function App() {
-  const [notes, setNotes] = useLocalStorage<RawNote[]>("NOTES", starterNotes);
-  const [tags, setTags] = useLocalStorage<Tag[]>("TAGS", starterTags);
-
-  // useEffect(() => {
-  //   localStorage.setItem("NOTES", JSON.stringify(starterNotes));
-  //   localStorage.setItem("TAGS", JSON.stringify(starterTags));
-  // }, [notes]);
+  const [notes, setNotes] = useLocalStorage<RawNote[]>("NOTES", [
+    ...starterNotes,
+  ]);
+  const [tags, setTags] = useLocalStorage<Tag[]>("TAGS", [...starterTags]);
 
   const notesWithTags = useMemo(() => {
     return notes.map((note) => {

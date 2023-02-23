@@ -26,7 +26,6 @@ export function NewNote({ onSubmit, onAddTag, availableTags }: NewNoteProps) {
         onAddTag={onAddTag}
         availableTags={availableTags}
       />
-      ;
     </>
   );
 }
