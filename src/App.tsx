@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
 import { NewNote } from "./assets/Pages/NewNote";
 import { useLocalStorage } from "./assets/utils/hooks/useLocalStorage";
@@ -9,6 +9,8 @@ import { Note } from "./assets/Components/Note";
 import { EditNote } from "./assets/Pages/EditNote";
 import Container from "@mui/material/Container";
 import remarkGfm from "remark-gfm";
+import starterNotes from "./assets/utils/starterNotes";
+import starterTags from "./assets/utils/starterTags";
 
 export type Note = {
   id: string;
@@ -38,6 +40,11 @@ export type Tag = {
 function App() {
   const [notes, setNotes] = useLocalStorage<RawNote[]>("NOTES", []);
   const [tags, setTags] = useLocalStorage<Tag[]>("TAGS", []);
+
+  useEffect(() => {
+    localStorage.setItem("NOTES", JSON.stringify(starterNotes));
+    localStorage.setItem("TAGS", JSON.stringify(starterTags));
+  }, []);
 
   const notesWithTags = useMemo(() => {
     return notes.map((note) => {

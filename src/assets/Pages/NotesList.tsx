@@ -87,7 +87,7 @@ export function NoteList({
               textAlign: { xs: "center", md: "left" },
             }}
           >
-            Markdown Notes
+            Notes
           </Typography>
         </Grid>
         <Grid item>
@@ -181,13 +181,6 @@ export function NoteList({
         ))}
       </Grid>
 
-      {/* <div>
-        {filteredNotes.map((note) => (
-          <div key={note.id}>
-            <NoteCard id={note.id} title={note.title} tags={note.tags} />
-          </div>
-        ))}
-      </div> */}
       <EditTagsModal
         availableTags={availableTags}
         show={editTagsModalIsOpen}
